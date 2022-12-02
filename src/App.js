@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './style.css';
-
+const CountContext = React.createContext();
 export default function App() {
+  const [count, setCount] = useState('Sherlock');
   return (
-    <div>
-      <h1>Hello StackBlitz!</h1>
-      <p>Start editing to see some magic happen :)</p>
-      <ComponentA />
-    </div>
+    <CountContext.Provider value={count}>
+      <div>
+        <h1>Hello StackBlitz!</h1>
+        <p>Start editing to see some magic happen :)</p>
+        <
+        <ComponentA />
+      </div>
+    </CountContext.Provider>
   );
 }
 
@@ -21,6 +25,9 @@ const ComponentA = ({ children }) => {
   );
 };
 const ComponentB = ({ children }) => {
+  useEffect(() => {
+    console.log('rerender');
+  }, []);
   return (
     <div
       style={{
@@ -35,6 +42,7 @@ const ComponentB = ({ children }) => {
   );
 };
 const ComponentC = ({ children }) => {
+  const user = useContext(CountContext);
   return (
     <div
       style={{
@@ -44,7 +52,7 @@ const ComponentC = ({ children }) => {
         margin: '20px',
       }}
     >
-      Comp C<div>{children}</div>
+      Comp C<div>{user}</div>
     </div>
   );
 };
