@@ -1,33 +1,53 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import './style.css';
 const CountContext = React.createContext();
 export default function App() {
-  const [count, setCount] = useState('Sherlock');
+  const [counts, setCounts] = useState({ A: 0, B: 0, C: 0 });
+  const [count, setCount] = useState(0);
+  console.log('App');
   return (
-    <CountContext.Provider value={count}>
+    <CountContext.Provider value={counts}>
       <div>
         <h1>Hello StackBlitz!</h1>
         <p>Start editing to see some magic happen :)</p>
-        <
+        <button onClick={() => setCount((prev) => prev + 1)}>Plus</button>
+        <button
+          onClick={() => setCounts((prev) => ({ ...prev, A: prev.A + 1 }))}
+        >
+          Plus A
+        </button>
+        <button
+          onClick={() => setCounts((prev) => ({ ...prev, B: prev.B + 1 }))}
+        >
+          Plus B
+        </button>
+        <button
+          onClick={() => setCounts((prev) => ({ ...prev, C: prev.C + 1 }))}
+        >
+          Plus C
+        </button>
+        <div>{count}</div>
         <ComponentA />
       </div>
     </CountContext.Provider>
   );
 }
 
-const ComponentA = ({ children }) => {
+const ComponentA = React.memo(({ children }) => {
+  const { A } = useContext(CountContext);
+  console.log('A');
   return (
     <div
       style={{ borderStyle: 'solid', borderColor: 'red', borderWidth: '1px' }}
     >
-      Comp A <ComponentB />
+      Comp A <div>{A}</div>
+      <ComponentB />
     </div>
   );
-};
+});
 const ComponentB = ({ children }) => {
-  useEffect(() => {
-    console.log('rerender');
-  }, []);
+  const { B } = useContext(CountContext);
+  console.log('B');
   return (
     <div
       style={{
@@ -37,12 +57,13 @@ const ComponentB = ({ children }) => {
         margin: '20px',
       }}
     >
-      Comp B <ComponentC />
+      Comp B<div>{B}</div> <ComponentC />
     </div>
   );
 };
 const ComponentC = ({ children }) => {
-  const user = useContext(CountContext);
+  const { C } = useContext(CountContext);
+  console.log('C');
   return (
     <div
       style={{
@@ -52,7 +73,7 @@ const ComponentC = ({ children }) => {
         margin: '20px',
       }}
     >
-      Comp C<div>{user}</div>
+      Comp C<div>{C}</div>
     </div>
   );
 };
