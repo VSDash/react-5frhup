@@ -6,7 +6,7 @@ export default function App() {
   const [count, setCount] = useState(0);
   console.log('App');
   return (
-    <CountContext.Provider value={counts}>
+    <CountContext.Provider value={{ ...counts }}>
       <div>
         <h1>Hello StackBlitz!</h1>
         <p>Start editing to see some magic happen :)</p>
